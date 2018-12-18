@@ -1,0 +1,219 @@
+<div id="sbone__wrap--{{section.id}}" class="sbone__wrap">
+  <div id="sbone__content--{{section.id}}" class="sbone__content">
+    {% if section.settings.title != blank %}
+    <h2 id="sbone__title--{{section.id}}" class="sbone__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+    <h4 id="sbone__subtitle--{{section.id}}" class="sbone__subtitle">{{ section.settings.subtitle }}</h4>
+    {% endif %}
+    <div>
+      {% comment %} CONTENT HERE {% endcomment %}
+      CONTENT HERE
+    </div>
+  </div>
+</div>
+
+{% style %}
+  {% comment %}========================   CSS Liquid ========================{% endcomment %}
+  
+  {% comment %} Gerenal setting {% endcomment %}
+  {% assign title_font = section.settings.title_font %}
+  {% assign subtitle_font = section.settings.subtitle_font %}
+  {{ title_font | font_face }}
+  {{ subtitle_font | font_face }}
+  #sbone__title--{{section.id}}{
+    font-family:{{title_font.family}};
+    color:{{section.settings.title_cl}};
+    {{section.settings.title_style}}
+  }
+  #sbone__subtitle--{{section.id}}{
+    font-family:{{subtitle_font.family}};
+    color:{{section.settings.subtitle_cl}};
+    {{section.settings.subtitle_style}}
+  }
+  #sbone__wrap--{{section.id}}{
+    margin-top:{{section.settings.margin_top}}px;
+    margin-bottom:{{section.settings.margin_bottom}}px;
+    padding-top:{{section.settings.padding_top}}px;
+    padding-bottom:{{section.settings.padding_bottom}}px;
+    background-color:{{section.settings.bg_color}};
+    {% if section.settings.bg_image %}
+    background-image:url({{section.settings.bg_image | img_url:'master'}});
+    {% if section.settings.bg_attachment %}background-attachment:fixed;{% endif %}
+    background-repeat:no-repeat;
+    background-position:center;
+    {% endif %}
+  }
+  #sbone__content--{{section.id}}{
+    max-width:{{section.settings.max_width}}px;
+    margin:0 auto;
+  }
+  
+  {% endstyle %}
+
+{% schema %}
+  {
+    "name": "Shopify SBone",
+    "class": "index-section",
+    "max_blocks": 100,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background image"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "checkbox",
+        "id": "bg_attachment",
+        "label": "Parallax"
+      },
+      {
+        "type": "header",
+        "content": "Distance"
+      },
+      {
+        "type": "range",
+        "id": "max_width",
+        "label": "Section width",
+        "min": 1200,
+        "max": 1920,
+        "step": 10,
+        "unit": "px",
+        "default": 1390
+      },
+      {
+        "type": "range",
+        "id": "margin_top",
+        "label": "Margin Top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "label": "Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding Top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding Bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Text",
+        "default": "Section heading"
+      },
+      {
+        "type": "color",
+        "id": "title_cl",
+        "label": "Color",
+        "default": "#3d4246"
+      },
+      {
+        "type": "font_picker",
+        "id": "title_font",
+        "label": "Font",
+        "default": "work_sans_n6"
+      },
+      {
+        "type": "textarea",
+        "id": "title_style",
+        "label": "Custom style",
+        "default": "font-weight:bold;font-size:30px;text-align:center;",
+        "info": "[How to CSS text?](https:\/\/www.w3schools.com\/css\/css_text.asp)"
+      },
+      {
+        "type": "header",
+        "content": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Text",
+        "default": "Section subheading"
+      },
+      {
+        "type": "color",
+        "id": "subtitle_cl",
+        "label": "Color",
+        "default": "#3d4246"
+      },
+      {
+        "type": "font_picker",
+        "id": "subtitle_font",
+        "label": "Font",
+        "default": "alegreya_sans_n4"
+      },
+      {
+        "type": "textarea",
+        "id": "subtitle_style",
+        "label": "Custom style",
+        "default": "font-style:italic;font-size:18px;text-align:center;font-weight:100;",
+        "info": "[How to CSS text?](https:\/\/www.w3schools.com\/css\/css_text.asp)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Banner",
+        "settings": [
+          {
+            "type": "range",
+            "id": "banner_width",
+            "label": "Width",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "default": 25
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "SBone",
+        "category": "# Shopify section",
+        "blocks": [
+        ]
+      }
+    ]
+  }
+{% endschema %}
