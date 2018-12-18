@@ -1,0 +1,823 @@
+<div id="stimeline__wrap--{{section.id}}" class="stimeline__wrap">
+  <div id="stimeline__content--{{section.id}}" class="stimeline__content">
+    {% if section.settings.title != blank %}
+    <h2 id="stimeline__title--{{section.id}}" class="stimeline__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+    <h4 id="stimeline__subtitle--{{section.id}}" class="stimeline__subtitle">{{ section.settings.subtitle }}</h4>
+    {% endif %}
+    
+    <section class="s-timeline js-s-timeline">
+      <div class="s-timeline__container">
+        {% for block in section.blocks %}
+        <div class="s-timeline__block js-cd-block" {{ block.shopify_attributes }}>
+          <div class="s-timeline__img js-cd-img" style="background-color:{{block.settings.bg}}">
+            {% if block.settings.image != blank %}
+            <img src="{{block.settings.image | img_url : '40x'}}" alt="{{block.settings.title}}">
+            {% else %}
+            <svg aria-hidden="true" data-prefix="fas" data-icon="map-pin" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512" class="svg-inline--fa fa-map-pin fa-w-9 fa-2x"><path fill="currentColor" d="M112 316.94v156.69l22.02 33.02c4.75 7.12 15.22 7.12 19.97 0L176 473.63V316.94c-10.39 1.92-21.06 3.06-32 3.06s-21.61-1.14-32-3.06zM144 0C64.47 0 0 64.47 0 144s64.47 144 144 144 144-64.47 144-144S223.53 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.62-5.38 12-12 12s-12-5.38-12-12c0-50.73 41.28-92 92-92 6.62 0 12 5.38 12 12s-5.38 12-12 12z" class=""></path></svg>
+            {% endif %}
+          </div>
+          <div class="s-timeline__content js-cd-content">
+            {% if block.settings.title != blank %}
+              <h2>{{block.settings.title}}</h2>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <p>{{block.settings.description}}</p>
+            {% endif %}
+            {% if block.settings.link != blank %}
+              <a href="{{block.settings.link}}" title="{{section.settings.button-text}}" class="s-timeline__read-more">{{section.settings.button-text}}</a>
+            {% endif %}
+            {% if block.settings.time != blank %}
+              <span class="s-timeline__date">{{block.settings.time}}</span>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Shopify Timeline",
+    "class": "index-section",
+    "max_blocks": 1000,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Timeline"
+      },
+      {
+        "type": "color",
+        "id": "border",
+        "label": "Border and lines",
+        "default": "#d7e4ed"
+      },
+      {
+        "type": "color",
+        "id": "caption-bg",
+        "label": "Caption background",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Caption title",
+        "default": "#303e49"
+      },
+      {
+        "type": "color",
+        "id": "des_color",
+        "label": "Caption description",
+        "default": "#999"
+      },
+      {
+        "type": "color",
+        "id": "btn-bg",
+        "label": "Button background",
+        "default": "#acb7c0"
+      },
+      {
+        "type": "text",
+        "id": "button-text",
+        "label": "Button text",
+        "default": "Read more"
+      },
+      {
+        "type": "font_picker",
+        "id": "caption_font",
+        "label": "Caption font",
+        "default": "asul_n4"
+      },
+      {
+        "type": "header",
+        "content": "Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background image"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color",
+        "default": "#ececec"
+      },
+      {
+        "type": "checkbox",
+        "id": "bg_attachment",
+        "label": "Parallax"
+      },
+      {
+        "type": "header",
+        "content": "Distance"
+      },
+      {
+        "type": "range",
+        "id": "max_width",
+        "label": "Section width",
+        "min": 1200,
+        "max": 1920,
+        "step": 10,
+        "unit": "px",
+        "default": 1390
+      },
+      {
+        "type": "range",
+        "id": "margin_top",
+        "label": "Margin Top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "label": "Margin Bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "label": "Padding Top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "label": "Padding Bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Text",
+        "default": "Timeline"
+      },
+      {
+        "type": "color",
+        "id": "title_cl",
+        "label": "Color",
+        "default": "#3d4246"
+      },
+      {
+        "type": "font_picker",
+        "id": "title_font",
+        "label": "Font",
+        "default": "work_sans_n6"
+      },
+      {
+        "type": "textarea",
+        "id": "title_style",
+        "label": "Custom style",
+        "default": "font-weight:bold;font-size:30px;text-align:center;",
+        "info": "[How to CSS text?](https:\/\/www.w3schools.com\/css\/css_text.asp)"
+      },
+      {
+        "type": "header",
+        "content": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Text",
+        "default": "Section subheading"
+      },
+      {
+        "type": "color",
+        "id": "subtitle_cl",
+        "label": "Color",
+        "default": "#3d4246"
+      },
+      {
+        "type": "font_picker",
+        "id": "subtitle_font",
+        "label": "Font",
+        "default": "alegreya_sans_n4"
+      },
+      {
+        "type": "textarea",
+        "id": "subtitle_style",
+        "label": "Custom style",
+        "default": "font-style:italic;font-size:18px;text-align:center;font-weight:100;",
+        "info": "[How to CSS text?](https:\/\/www.w3schools.com\/css\/css_text.asp)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "time",
+        "name": "Time",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Point"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Icon",
+            "info": "50 x 50px recommended"
+          },
+          {
+            "type": "color",
+            "id": "bg",
+            "label": "Background",
+            "default": "#75ce66"
+          },
+          {
+            "type": "header",
+            "content": "Caption"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Title of block"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie mauris ac neque feugiat vestibulum placerat ut ligula. Pellentesque vehicula gravida eros dictum dapibus"
+          },
+          {
+            "type": "text",
+            "id": "time",
+            "label": "Date",
+            "default": "Jan 04"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "URL link",
+            "default": "/collections/all"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Timeline",
+        "category": "# Shopify section",
+        "settings": {
+          "border": "#d7e4ed",
+          "caption-bg": "#fff",
+          "title_color": "#000000",
+          "des_color": "#777777",
+          "btn-bg": "#5c6ac4",
+          "button-text": "Read more",
+          "caption_font": "asul_n4",
+          "bg_image": "",
+          "bg_color": "#e9f0f5",
+          "bg_attachment": false,
+          "max_width": 1390,
+          "margin_top": 0,
+          "margin_bottom": 0,
+          "padding_top": 10,
+          "padding_bottom": 10,
+          "title": "Our history",
+          "title_cl": "#839bae",
+          "title_font": "work_sans_n6",
+          "title_style": "font-weight:bold;font-size:30px;text-align:center;text-transform:none;margin-top:10px;",
+          "subtitle": "",
+          "subtitle_cl": "#4f6e88",
+          "subtitle_font": "alegreya_sans_n4",
+          "subtitle_style": "font-style:italic;font-size:18px;text-align:center;font-weight:100;"
+        },
+        "blocks": [
+          {
+            "type": "time",
+            "settings": {
+              "image": "",
+              "bg": "#75ce66",
+              "title": "Title of block 1",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie mauris ac neque feugiat vestibulum placerat ut ligula. Pellentesque vehicula gravida eros dictum dapibus",
+              "time": "Jan 04",
+              "link": "shopify:\/\/collections\/all"
+            }
+          },
+          {
+            "type": "time",
+            "settings": {
+              "image": "",
+              "bg": "#c03b44",
+              "title": "Title of block 2",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum.",
+              "time": "Jan 17",
+              "link": "shopify:\/\/collections\/all"
+            }
+          },
+          {
+            "type": "time",
+            "settings": {
+              "image": "",
+              "bg": "#f0ca45",
+              "title": "Title of block 3",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, obcaecati, quisquam id molestias eaque asperiores voluptatibus cupiditate error assumenda delectus odit similique earum voluptatem doloremque dolorem ipsam quae rerum quis. Odit, itaque, deserunt corporis vero ipsum nisi eius odio natus ullam provident pariatur temporibus quia eos repellat consequuntur perferendis enim amet quae quasi repudiandae sed quod veniam dolore possimus rem voluptatum eveniet eligendi quis fugiat aliquam sunt similique aut adipisci.",
+              "time": "Feb 10",
+              "link": "shopify:\/\/collections\/all"
+            }
+          },
+          {
+            "type": "time",
+            "settings": {
+              "image": "",
+              "bg": "#75ce66",
+              "title": "Title of block 4",
+              "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.",
+              "time": "Feb 28",
+              "link": "shopify:\/\/collections\/all"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% style %}
+  {% comment %}========================   CSS Liquid ========================{% endcomment %}
+  
+  {% comment %} Gerenal setting {% endcomment %}
+  {% assign title_font = section.settings.title_font %}
+  {% assign subtitle_font = section.settings.subtitle_font %}
+  {% assign caption_font = section.settings.caption_font %}
+  {{ title_font | font_face }}
+  {{ subtitle_font | font_face }}
+  {{ caption_font | font_face }}
+  #stimeline__title--{{section.id}}{
+    font-family:{{title_font.family}};
+    color:{{section.settings.title_cl}};
+    {{section.settings.title_style}}
+  }
+  #stimeline__subtitle--{{section.id}}{
+    font-family:{{subtitle_font.family}};
+    color:{{section.settings.subtitle_cl}};
+    {{section.settings.subtitle_style}}
+  }
+  #stimeline__wrap--{{section.id}}{
+    margin-top:{{section.settings.margin_top}}px;
+    margin-bottom:{{section.settings.margin_bottom}}px;
+    padding-top:{{section.settings.padding_top}}px;
+    padding-bottom:{{section.settings.padding_bottom}}px;
+    background-color:{{section.settings.bg_color}};
+    {% if section.settings.bg_image %}
+    background-image:url({{section.settings.bg_image | img_url:'master'}});
+    {% if section.settings.bg_attachment %}background-attachment:fixed;{% endif %}
+    background-repeat:no-repeat;
+    background-position:center;
+    {% endif %}
+  }
+  #stimeline__content--{{section.id}}{
+    max-width:{{section.settings.max_width}}px;
+    margin:0 auto;
+  }
+  #shopify-section-{{section.id}} .s-timeline__content h2{
+  font-family:{{caption_font.family}};
+  text-transform:none;
+  }
+
+:root {
+  --stimeline-border: {{section.settings.border}}; 
+  --stimeline-caption-bg: {{section.settings.caption-bg}};
+  --stimeline-title-cl: {{section.settings.title_color}}; 
+  --stimeline-des-cl: {{section.settings.des_color}};
+  --stimeline-btn-bg: {{section.settings.btn-bg}};
+}
+
+  {% comment %}========================   Pure CSS   ========================{% endcomment %}
+
+-------------------------------- */
+@media only screen and (min-width: 1170px) {
+  .cd-is-hidden {
+    visibility: hidden;
+  }
+}
+
+.s-timeline {
+  overflow: hidden;
+  margin: 2em auto;
+}
+
+.s-timeline__container {
+  position: relative;
+  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 2em 0;
+}
+
+.s-timeline__container::before {
+  /* this is the vertical line */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 18px;
+  height: 100%;
+  width: 4px;
+  background: var(--stimeline-border);
+}
+
+@media only screen and (min-width: 1170px) {
+  .s-timeline {
+    margin-top: 3em;
+    margin-bottom: 3em;
+  }
+  .s-timeline__container::before {
+    left: 50%;
+    margin-left: -2px;
+  }
+}
+
+.s-timeline__block {
+  position: relative;
+  margin: 2em 0;
+}
+
+.s-timeline__block:after {
+  /* clearfix */
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.s-timeline__block:first-child {
+  margin-top: 0;
+}
+
+.s-timeline__block:last-child {
+  margin-bottom: 0;
+}
+
+@media only screen and (min-width: 1170px) {
+  .s-timeline__block {
+    margin: 4em 0;
+  }
+}
+
+.s-timeline__img {
+  position: absolute;
+  color:white;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align:center;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.s-timeline__img svg{
+  max-width:15px;
+  vertical-align: middle;
+}
+
+.s-timeline__img img {
+  display: block;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  margin-left: -15px;
+  margin-top: -15px;
+}
+
+@media only screen and (min-width: 1170px) {
+  .s-timeline__img {
+    width: 60px;
+    height: 60px;
+  line-height: 60px;
+    left: 50%;
+    margin-left: -30px;
+    /* Force Hardware Acceleration */
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+  }
+  .s-timeline__img.s-timeline__img--bounce-in {
+    visibility: visible;
+    -webkit-animation: cd-bounce-1 0.6s;
+            animation: cd-bounce-1 0.6s;
+  }
+}
+
+@-webkit-keyframes cd-bounce-1 {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes cd-bounce-1 {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+.s-timeline__content {
+  position: relative;
+  margin-left: 60px;
+  border-radius: 0.25em;
+  padding: 1em;
+  background: var(--stimeline-caption-bg);
+  -webkit-box-shadow: 0 3px 0 var(--stimeline-border);
+  box-shadow: 0 3px 0 var(--stimeline-border);
+}
+
+.s-timeline__content:after {
+  /* clearfix */
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.s-timeline__content::before {
+  /* triangle next to content block */
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 100%;
+  height: 0;
+  width: 0;
+  border: 7px solid transparent;
+  border-right: 7px solid var(--stimeline-caption-bg);
+}
+
+.s-timeline__content h2 {
+  color: var(--stimeline-title-cl);
+}
+
+.s-timeline__content p {
+  margin: 1em 0;
+  line-height: 1.6;
+  color: var(--stimeline-des-cl);
+}
+
+.s-timeline__read-more,
+.s-timeline__date {
+  display: inline-block;
+}
+
+.s-timeline__read-more {
+  float: right;
+  padding: 12px 15px;
+  background: var(--stimeline-btn-bg);
+  color: white;
+  border-radius: 4px;
+  -webkit-transition:ease 0.3s;
+  -o-transition:ease 0.3s;
+  transition:ease 0.3s
+}
+
+.s-timeline__date {
+  float: left;
+  padding: 10px 0;
+}
+
+@media only screen and (min-width: 1170px) {
+  .s-timeline__content {
+    margin-left: 0;
+    padding: 1.6em;
+    width: 45%;
+    /* Force Hardware Acceleration */
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+  }
+  .s-timeline__content::before {
+    top: 24px;
+    left: 100%;
+    border-color: transparent;
+    border-left-color: var(--stimeline-caption-bg);
+  }
+  .s-timeline__read-more {
+    float: left;
+  }
+  .s-timeline__date {
+    position: absolute;
+    width: 100%;
+    left: 122%;
+    top: 6px;
+  }
+  .s-timeline__block:nth-child(even) .s-timeline__content {
+    float: right;
+  }
+  .s-timeline__block:nth-child(even) .s-timeline__content::before {
+    top: 24px;
+    left: auto;
+    right: 100%;
+    border-color: transparent;
+    border-right-color: var(--stimeline-caption-bg);
+  }
+  .s-timeline__block:nth-child(even) .s-timeline__read-more {
+    float: right;
+  }
+  .s-timeline__block:nth-child(even) .s-timeline__date {
+    left: auto;
+    right: 122%;
+    text-align: right;
+  }
+  .s-timeline__content.s-timeline__content--bounce-in {
+    visibility: visible;
+    -webkit-animation: cd-bounce-2 0.6s;
+            animation: cd-bounce-2 0.6s;
+  }
+}
+
+@media only screen and (min-width: 1170px) {
+  /* inverse bounce effect on even content blocks */
+  .s-timeline__block:nth-child(even) .s-timeline__content.s-timeline__content--bounce-in {
+    -webkit-animation: cd-bounce-2-inverse 0.6s;
+            animation: cd-bounce-2-inverse 0.6s;
+  }
+}
+
+@-webkit-keyframes cd-bounce-2 {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(20px);
+            transform: translateX(20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@keyframes cd-bounce-2 {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(20px);
+            transform: translateX(20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes cd-bounce-2-inverse {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(100px);
+            transform: translateX(100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(-20px);
+            transform: translateX(-20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@keyframes cd-bounce-2-inverse {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(100px);
+            transform: translateX(100px);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: translateX(-20px);
+            transform: translateX(-20px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+    
+  {% endstyle %}
+
+
+<script>
+  (function(){
+    // Vertical Timeline - by CodyHouse.co
+    function VerticalTimeline( element ) {
+      this.element = element;
+      this.blocks = this.element.getElementsByClassName("js-cd-block");
+      this.images = this.element.getElementsByClassName("js-cd-img");
+      this.contents = this.element.getElementsByClassName("js-cd-content");
+      this.offset = 0.8;
+      this.hideBlocks();
+    };
+
+    VerticalTimeline.prototype.hideBlocks = function() {
+      //hide timeline blocks which are outside the viewport
+      if ( !"classList" in document.documentElement ) {
+        return;
+      }
+      var self = this;
+      for( var i = 0; i < this.blocks.length; i++) {
+        (function(i){
+          if( self.blocks[i].getBoundingClientRect().top > window.innerHeight*self.offset ) {
+            self.images[i].classList.add("cd-is-hidden"); 
+            self.contents[i].classList.add("cd-is-hidden"); 
+          }
+        })(i);
+      }
+    };
+
+    VerticalTimeline.prototype.showBlocks = function() {
+      if ( ! "classList" in document.documentElement ) {
+        return;
+      }
+      var self = this;
+      for( var i = 0; i < this.blocks.length; i++) {
+        (function(i){
+          if( self.contents[i].classList.contains("cd-is-hidden") && self.blocks[i].getBoundingClientRect().top <= window.innerHeight*self.offset ) {
+            // add bounce-in animation
+            self.images[i].classList.add("s-timeline__img--bounce-in");
+            self.contents[i].classList.add("s-timeline__content--bounce-in");
+            self.images[i].classList.remove("cd-is-hidden");
+            self.contents[i].classList.remove("cd-is-hidden");
+          }
+        })(i);
+      }
+    };
+
+    var verticalTimelines = document.getElementsByClassName("js-s-timeline"),
+        verticalTimelinesArray = [],
+        scrolling = false;
+    if( verticalTimelines.length > 0 ) {
+      for( var i = 0; i < verticalTimelines.length; i++) {
+        (function(i){
+          verticalTimelinesArray.push(new VerticalTimeline(verticalTimelines[i]));
+        })(i);
+      }
+
+      //show timeline blocks on scrolling
+      window.addEventListener("scroll", function(event) {
+        if( !scrolling ) {
+          scrolling = true;
+          (!window.requestAnimationFrame) ? setTimeout(checkTimelineScroll, 250) : window.requestAnimationFrame(checkTimelineScroll);
+        }
+      });
+    }
+
+    function checkTimelineScroll() {
+      verticalTimelinesArray.forEach(function(timeline){
+        timeline.showBlocks();
+      });
+      scrolling = false;
+    };
+  })();
+</script>
