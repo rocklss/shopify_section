@@ -1,0 +1,149 @@
+<div id="saccordion-product__wrap--{{section.id}}" class="saccordion-product__wrap">
+  <div id="saccordion-product__content--{{section.id}}" class="saccordion-product__content">
+    {% if section.settings.title != blank %}
+    <h2 id="saccordion-product__title--{{section.id}}" class="saccordion-product__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+    <h4 id="saccordion-product__subtitle--{{section.id}}" class="saccordion-product__subtitle">{{ section.settings.subtitle }}</h4>
+    {% endif %}
+    <div>
+      {% for block in section.blocks %}
+      {% if block.settings.collection != blank %}
+      {% assign collection = collections[block.settings.collection] %}
+      {% assign collection_image_url = '' %}
+      {% if block.settings.background_image != blank %}
+      {% assign collection_image_url = block.settings.background_image | img_url: '1920x'%}
+      {% else %}
+      {% assign collection_image_url = collection | img_url: '1920x' %}
+      {% endif %}
+      {% assign catalog_title = block.settings.title %}
+      {% if catalog_title == '' %}
+      {% assign catalog_title = collection.title %}
+      {% endif %}
+      <div class="saccordion-title" 
+           style="color:{{block.settings.catalog_color}};
+                  background-color:#eee;
+                  {% unless collection_image_url contains 'no-image' %}
+                  background-image:url({{collection_image_url}});
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  background-size: cover;
+                  {% endunless %}">
+        <span class="saccordion-title__heading">{{catalog_title}}</span>
+        <a style="color:{{block.settings.catalog_color}}" href="{{collection.url}}" title="{{catalog_title}}" class="saccordion-title__count">
+          View all (<span>{{ collection.products_count }} {{ collection.products_count | pluralize: 'Item', 'Items' }}</span>)
+        </a>
+      </div>
+      <div class="saccordion-panel">
+        <div class="sproduct-wrap">
+          {% assign limit = block.settings.limit %}
+          {% for product in collection.products limit:limit %}
+          <div class="sproduct-item">
+            <a class="sproduct-item__link" href="{{ product.url | within: collection }}">
+              <img class="sproduct-item__image" src="{{ product.featured_image.src | img_url: '240x' }}" alt="{{ product.title }}">
+              <div class="sproduct-item__title {% if section.settings.truncate %}sproduct-item__title--truncate{% endif %}">{{ product.title }}</div>
+            </a>
+            <div class="sproduct-item__price">
+              {{product.price | money}}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+
+      {% assign catalog_title = block.settings.title %}
+      {% if catalog_title == '' %}
+      {% assign catalog_title = 'Catalog title' %}
+      {% endif %}
+      {% assign collection_image_url = block.settings.background_image | img_url: '1920x'%}
+      <div class="saccordion-title" 
+           style="color:{{block.settings.catalog_color}};
+                  background-color:#eee;
+                  {% unless collection_image_url contains 'no-image' %}
+                  background-image:url({{collection_image_url}});
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  background-size: cover;
+                  {% endunless %}">
+        <span class="saccordion-title__heading">{{catalog_title}}</span>
+        <a style="color:{{block.settings.catalog_color}}" href="/collections/all" title="{{catalog_title}}" class="saccordion-title__count">
+          View all
+        </a>
+      </div>
+      <div class="saccordion-panel">
+        <div class="sproduct-wrap">
+          {% assign limit = block.settings.limit %}
+          {% for i in (1..limit) %}
+          <div class="sproduct-item">
+            <a class="sproduct-item__link" href="#">
+              {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              <div class="sproduct-item__title">Product title</div>
+            </a>
+            <div class="sproduct-item__price">
+              {{ 1699 | money}}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+	{"name":"Product Catalog","class":"index-section","max_blocks":100,"settings":[{"type":"header","content":"Catalog settings"},{"type":"range","id":"catalog_height","label":"Height","min":20,"max":520,"step":5,"unit":"px","default":120},{"type":"font_picker","id":"catalog_font","label":"Font","default":"work_sans_n6"},{"type":"checkbox","id":"truncate","label":"Truncate product title","default":true},{"type":"header","content":"Background"},{"type":"image_picker","id":"bg_image","label":"Background image"},{"type":"color","id":"bg_color","label":"Background color"},{"type":"checkbox","id":"bg_attachment","label":"Parallax"},{"type":"header","content":"Distance"},{"type":"range","id":"max_width","label":"Section width","min":1200,"max":1920,"step":10,"unit":"px","default":1390},{"type":"range","id":"margin_top","label":"Margin Top","min":0,"max":100,"step":1,"unit":"px","default":0},{"type":"range","id":"margin_bottom","label":"Margin Bottom","min":0,"max":100,"step":1,"unit":"px","default":0},{"type":"range","id":"padding_top","label":"Padding Top","min":0,"max":100,"step":1,"unit":"px","default":10},{"type":"range","id":"padding_bottom","label":"Padding Bottom","min":0,"max":100,"step":1,"unit":"px","default":10},{"type":"header","content":"Heading"},{"type":"text","id":"title","label":"Text","default":"Product Catalog"},{"type":"color","id":"title_cl","label":"Color","default":"#3d4246"},{"type":"font_picker","id":"title_font","label":"Font","default":"work_sans_n6"},{"type":"textarea","id":"title_style","label":"Custom style","default":"font-weight:bold;font-size:30px;text-align:center;","info":"[How to CSS text?](https://www.w3schools.com/css/css_text.asp)"},{"type":"header","content":"Subheading"},{"type":"text","id":"subtitle","label":"Text","default":"Section subheading"},{"type":"color","id":"subtitle_cl","label":"Color","default":"#3d4246"},{"type":"font_picker","id":"subtitle_font","label":"Font","default":"alegreya_sans_n4"},{"type":"textarea","id":"subtitle_style","label":"Custom style","default":"font-style:italic;font-size:18px;text-align:center;font-weight:100;","info":"[How to CSS text?](https://www.w3schools.com/css/css_text.asp)"}],"blocks":[{"type":"collection","name":"Collection","settings":[{"type":"header","content":"Collection"},{"type":"collection","id":"collection","label":"Collection"},{"type":"text","id":"title","label":"Title"},{"type":"range","id":"limit","label":"Number of products","min":8,"max":48,"step":1,"default":8},{"type":"color","id":"catalog_color","label":"Text color","default":"#000"},{"type":"header","content":"Background"},{"type":"image_picker","id":"background_image","label":"Background Image"}]}],"presets":[{"name":"Product Catalog","category":"# Shopify section","blocks":[{"type":"collection"},{"type":"collection"}]}]}
+{% endschema %}
+
+{% style %}
+  {% comment %}========================   CSS Liquid ========================{% endcomment %}
+  
+  {% comment %} Gerenal setting {% endcomment %}
+  {% assign title_font = section.settings.title_font %}
+  {% assign subtitle_font = section.settings.subtitle_font %}
+  {% assign catalog_font = section.settings.catalog_font %}
+  {{ title_font | font_face }}
+  {{ subtitle_font | font_face }}
+  {{ catalog_font | font_face }}	 
+  #saccordion-product__title--{{section.id}}{
+    font-family:{{title_font.family}};
+    color:{{section.settings.title_cl}};
+    {{section.settings.title_style}}
+  }
+  #saccordion-product__subtitle--{{section.id}}{
+    font-family:{{subtitle_font.family}};
+    color:{{section.settings.subtitle_cl}};
+    {{section.settings.subtitle_style}}
+  }
+  #saccordion-product__wrap--{{section.id}}{
+    margin-top:{{section.settings.margin_top}}px;
+    margin-bottom:{{section.settings.margin_bottom}}px;
+    padding-top:{{section.settings.padding_top}}px;
+    padding-bottom:{{section.settings.padding_bottom}}px;
+    background-color:{{section.settings.bg_color}};
+    {% if section.settings.bg_image %}
+    background-image:url({{section.settings.bg_image | img_url:'master'}});
+    {% if section.settings.bg_attachment %}background-attachment:fixed;{% endif %}
+    background-repeat:no-repeat;
+    background-position:center;
+    {% endif %}
+  }
+  #saccordion-product__content--{{section.id}}{
+    max-width:{{section.settings.max_width}}px;
+    margin:0 auto;
+  }
+  #shopify-section-{{section.id}} .saccordion-title {
+    height:{{section.settings.catalog_height | append:'px'}};
+    font-family:{{catalog_font.family}};
+  }
+  
+{% comment %}========================   Pure CSS  ========================{% endcomment %}
+	.sproduct-item__title--truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.saccordion-title{padding:0 30px;font-weight:700;cursor:pointer;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:center;-ms-flex-align:center;align-items:center;width:100%;border:none;outline:0;-webkit-transition:.4s;-o-transition:.4s;transition:.4s}.sproduct-item__title{font-weight:700;margin:5px 0}.sproduct-item__link{display:block}.sproduct-wrap{display:-webkit-box;display:-ms-flexbox;display:flex;text-align:center;margin:0 -10px;-ms-flex-wrap:wrap;flex-wrap:wrap;padding:10px 0}.sproduct-item{padding:10px;-webkit-box-flex:0;-ms-flex:0 0 12.5%;flex:0 0 12.5%;max-width:12.5%}@media (max-width:1199px){.sproduct-item{-webkit-box-flex:0;-ms-flex:0 0 25%;flex:0 0 25%;max-width:25%}}@media (max-width:360px){.sproduct-item{-webkit-box-flex:0;-ms-flex:0 0 33.33333%;flex:0 0 33.33333%;max-width:33.33333%}}.saccordion-title__count{font-weight:100;font-style:italic}.saccordion-title__count:hover{text-decoration:underline}.saccordion-title.active,.saccordion-title:hover{background-color:#ccc}.saccordion-panel{padding:0;max-height:0;overflow:hidden;-webkit-transition:max-height .2s ease-out;-o-transition:max-height .2s ease-out;transition:max-height .2s ease-out}
+{% endstyle %}
+
+{% javascript %}
+	function productCatalog(){var t,e=document.getElementsByClassName("saccordion-title");e[0].classList.toggle("active");var n=e[0].nextElementSibling;for(n.style.maxHeight=n.scrollHeight+"px",t=0;t<e.length;t++)e[t].addEventListener("click",function(){this.classList.toggle("active");var t=this.nextElementSibling;t.style.maxHeight?t.style.maxHeight=null:t.style.maxHeight=t.scrollHeight+"px"})}window.addEventListener("load",function(){productCatalog()}),document.addEventListener("shopify:section:load",function(){productCatalog()}),document.addEventListener("shopify:block:select",function(){productCatalog()});
+{% endjavascript %}
