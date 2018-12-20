@@ -1,9 +1,5 @@
-To upload new seciton you need:
+Installation:
 
-1/ Go to http://shopify.com/admin/themes -> Actions -> Edit code
+If you are developing locally, simply copy the .liquid files into the sections directory.
 
-2/ Click Add a new section -> enter section's name -> click Create section
-
-3/ Paste the codes and enjoy !
-
-
+If you are developing on a live store, go to the template editor screen, and under sections create a new section with the name of the section you want to use (without the .liquid extension). Then copy the code into your new section.
