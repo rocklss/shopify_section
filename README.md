@@ -1,9 +1,9 @@
 To upload new seciton you need:
 
-1/ Copy codes
+1/ Go to http://shopify.com/admin/themes -> Actions -> Edit code
 
-2/ Create new section
+2/ Click Add a new section -> enter section's name -> click Create section
 
-3/ Paste the copied codes
+3/ Paste the codes and enjoy !
 
-Or you can read the documentation here: https://bit.ly/2CnCtDx
+
