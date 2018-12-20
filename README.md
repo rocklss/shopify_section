@@ -1,4 +1,4 @@
-Installation:
+## Installation:
 
 If you are developing locally, simply copy the .liquid files into the sections directory.
 
