@@ -1,0 +1,230 @@
+<div id="sgridbanner__wrap--{{section.id}}" class="sgridbanner__wrap">
+  <div id="sgridbanner__content--{{section.id}}" class="sgridbanner__content">
+    {% if section.settings.title != blank %}
+    <h2 id="sgridbanner__title--{{section.id}}" class="sgridbanner__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+    <h4 id="sgridbanner__subtitle--{{section.id}}" class="sgridbanner__subtitle">{{ section.settings.subtitle }}</h4>
+    {% endif %}
+    <div id="sbanner__wrap--{{section.id}}" class="sbanner__wrap">
+      {% for block in section.blocks %}
+      {% if block.type == 'image' %}
+      <div id="sbanner--{{block.id}}" class="sbanner" {{ block.shopify_attributes }}>
+        {% if block.settings.link != blank %}<a class="sbanner__link" href="{{ block.settings.link }}" title="{{block.settings.title}}">{% endif %}
+        <div class="heffect--{{block.settings.effect}}">
+          {% if block.settings.image != blank %}
+          <img class="sbanner__image" src="{{ block.settings.image | img_url: 'master' }}" alt="{{block.settings.alt | handle }}"/>
+          {% else %}
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        {% if block.settings.link != blank %}</a>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if block.type == 'text' %}
+      <div id="sbanner--{{block.id}}" class="sbanner" {{ block.shopify_attributes }}>
+        {% if block.settings.link != blank %}<a class="sbanner__link" href="{{ block.settings.link }}" title="{{block.settings.title}}">{% endif %}
+        <div class="heffect--{{block.settings.effect}}">
+          {% if block.settings.title != blank or block.settings.subtitle != blank %}
+          <div id="sbanner__caption--{{block.id}}" class="sbanner__caption">
+            <div>
+              {% if block.settings.title != blank %}
+              <div id="sbanner__title--{{block.id}}" class="sbanner__title">{{block.settings.title}}</div>
+              {% endif %}
+              {% if block.settings.subtitle != blank %}
+              <div id="sbanner__subtitle--{{block.id}}" class="sbanner__subtitle">{{block.settings.subtitle}}</div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+          {% if block.settings.image != blank %}
+          <img class="sbanner__image" src="{{ block.settings.image | img_url: 'master' }}" alt="{{block.settings.alt | handle }}"/>
+          {% else %}
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        {% if block.settings.link != blank %}</a>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if block.type == 'lookbook' %}
+      <div id="sbanner--{{block.id}}" class="sbanner" {{ block.shopify_attributes }}>
+        <div class="sbanner--lookbook">
+          {% if block.settings.image != blank %}
+          <img class="sbanner__image" src="{{ block.settings.image | img_url: 'master' }}" alt="{{block.settings.alt | handle }}"/>
+          {% else %}
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+
+          {% for i in (1..4) %}
+            {% assign t_product = 'product--' | append: i %}
+            {% assign t_top = 'top--' | append: i %}
+            {% assign t_left = 'left--' | append: i %}
+            {% assign t_popup = 'popup--' | append: i %}
+            {% assign product = all_products[block.settings[t_product]] %}
+            {% assign top = block.settings[t_top] %}
+            {% assign left = block.settings[t_left] %}
+            {% assign popup = block.settings[t_popup] %}
+            {% if block.settings[t_product] != blank %}
+            <div class="lookbook__point" style="top:{{top}}%;left:{{left}}%">
+              <a href="{{product.url}}" title="{{product.title}}" class="lookbook__dot--wr">
+                <span class="lookbook__dot">
+                  <svg aria-hidden="true" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" class=""></path></svg>
+                </span>
+              </a>
+              <span class="lookbook__caret lookbook__caret--{{popup}}"></span>
+              <div class="lookbook__pop lookbook__pop--{{popup}}">
+                <a href="{{product.url}}" title="{{product.title}}" class="lookbook__product">
+                  <img src="{{ product.featured_image | img_url: '200x' }}" alt="{{product.handle}}"/>
+                  <div class="lookbook__productmeta">
+                    <h4>{{product.title}}</h4>
+                    <span>{{product.price |money}}</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+      {% endif %}
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% style %}
+  {% comment %}========================   CSS Liquid ========================{% endcomment %}
+  
+  
+  {% comment %} Gerenal setting {% endcomment %}
+  {% assign title_font = section.settings.title_font %}
+  {% assign subtitle_font = section.settings.subtitle_font %}
+  {{ title_font | font_face }}
+  {{ subtitle_font | font_face }}
+  #sgridbanner__title--{{section.id}}{
+    font-family:{{title_font.family}};
+    color:{{section.settings.title_cl}};
+    {{section.settings.title_style}}
+  }
+  #sgridbanner__subtitle--{{section.id}}{
+    font-family:{{subtitle_font.family}};
+    color:{{section.settings.subtitle_cl}};
+    {{section.settings.subtitle_style}}
+  }
+  #sgridbanner__wrap--{{section.id}}{
+    margin-top:{{section.settings.margin_top}}px;
+    margin-bottom:{{section.settings.margin_bottom}}px;
+    padding-top:{{section.settings.padding_top}}px;
+    padding-bottom:{{section.settings.padding_bottom}}px;
+    background-color:{{section.settings.bg_color}};
+    {% if section.settings.bg_image %}
+    background-image:url({{section.settings.bg_image | img_url:'master'}});
+    {% if section.settings.bg_attachment %}background-attachment:fixed;{% endif %}
+    background-repeat:no-repeat;
+    background-position:center;
+    {% endif %}
+  }
+  #sgridbanner__content--{{section.id}}{
+    max-width:{{section.settings.max_width}}px;
+    margin:0 auto;
+  }
+  @media (min-width:500px){
+    #sbanner__wrap--{{section.id}}{
+      margin:0 calc(-{{section.settings.gutter}}px/2);
+    }
+  }
+  
+  {% comment %} Unique setting {% endcomment %}
+  .sbanner{
+    padding: 0 calc({{section.settings.gutter}}px/4) calc({{section.settings.gutter}}px/2);
+  }
+  
+    {% for block in section.blocks %}
+    @media (min-width:500px){
+      #sbanner--{{block.id}}{
+        -webkit-box-flex:{{block.settings.banner_width}}%;
+        -ms-flex:{{block.settings.banner_width}}%;
+        flex:{{block.settings.banner_width}}%;
+        max-width:{{block.settings.banner_width}}%;
+        padding: 0 calc({{section.settings.gutter}}px/2) {{section.settings.gutter}}px;
+      }
+    }
+  
+    {% if block.type == 'text' %}
+  
+      {% comment %} Title & Subtile calculator font-size {% endcomment %}
+      {% assign calc__fz-a = block.settings.title-fz | minus: 16 | divided_by: 16 %}
+      {% assign calc__fz-tran = calc__fz-a | times: 19.2 %}
+      {% assign calc__fz-b = block.settings.title-fz | minus: calc__fz-tran %}
+        #sbanner__title--{{block.id}}{
+          color:{{block.settings.title-cl}};
+          font-size:calc({{calc__fz-a}}vw + {{calc__fz-b}}px);
+          {{block.settings.title-style}}
+        }
+      {% assign calc__fz-a = block.settings.subtitle-fz | minus: 14 | divided_by: 16 %}
+      {% assign calc__fz-tran = calc__fz-a | times: 19.2 %}
+      {% assign calc__fz-b = block.settings.subtitle-fz | minus: calc__fz-tran %}
+      #sbanner__subtitle--{{block.id}}{
+        color:{{block.settings.subtitle-cl}};
+        font-size:calc({{calc__fz-a}}vw + {{calc__fz-b}}px);
+        {{block.settings.subtitle-style}}
+      }
+
+  
+      {% comment %} Position caption {% endcomment %}
+      #sbanner__caption--{{block.id}}{
+        -webkit-box-pack:{{block.settings.justify-content}};
+        -ms-flex-pack:{{block.settings.justify-content}};
+        justify-content:{{block.settings.justify-content}};
+        -webkit-box-align:{{block.settings.align-items}};
+        -ms-flex-align:{{block.settings.align-items}};
+        align-items:{{block.settings.align-items}};
+        text-align:{{block.settings.text-align}};
+      }
+    {% endif %}
+  
+    {% if block.type == 'lookbook' %}
+    {% comment %} Lookbook {% endcomment %}
+    .lookbook__dot{
+      background-color: {{block.settings.point__background}};
+      color:{{block.settings.point__text}};
+    }
+    .lookbook__pop{
+      background-color:{{block.settings.popup__background}};
+    }
+    .lookbook__caret--top{
+      border-top: 10px solid {{block.settings.popup__background}};
+    }
+    .lookbook__caret--bottom{
+      border-bottom: 10px solid {{block.settings.popup__background}};
+    }
+    .lookbook__caret--left{
+      border-left: 10px solid {{block.settings.popup__background}};
+    }
+    .lookbook__caret--right{
+      border-right: 10px solid {{block.settings.popup__background}};
+    }
+    @media (max-width:{{block.settings.hidden_xs}}){
+      .lookbook__caret,.lookbook__pop{
+        display:none;
+      }
+    }
+    {% endif %}
+    {% endfor %}
+  
+  
+  {% comment %}========================   Pure CSS   ========================{% endcomment %}
+  .lookbook__caret--bottom,.lookbook__caret--top{border-left:10px solid transparent;border-right:10px solid transparent;left:6px}.lookbook__caret{position:absolute;opacity:0;visibility:hidden}.lookbook__point:hover .lookbook__caret{opacity:1;visibility:visible;-webkit-transition:ease .35s;-o-transition:ease .35s;transition:ease .35s}.lookbook__caret--top{top:0}.lookbook__caret--left,.lookbook__caret--right{border-top:10px solid transparent;border-bottom:10px solid transparent;top:8px}.lookbook__caret--bottom{bottom:0}.lookbook__caret--left{right:calc(100% + 2px)}.lookbook__caret--right{left:calc(100% + 2px)}.lookbook__point:hover .lookbook__caret--top{top:-10px}.lookbook__point:hover .lookbook__caret--bottom{bottom:-11px}.sbanner--lookbook:after,.sbanner--lookbook:before{content:" ";display:table}.sbanner--lookbook{position:relative}.sbanner--lookbook:after{clear:both}.lookbook__point{cursor:pointer;position:absolute;z-index:2;width:32px;height:32px;border-radius:50%;-webkit-box-shadow:0 2px 4px rgba(0,0,0,.1);box-shadow:0 2px 4px rgba(0,0,0,.1);-ms-transition:all .35s ease;-webkit-transition:all .35s ease;transition:all .35s ease}.lookbook__productmeta h4{font-size:15px}@keyframes pulse{0%,to{-webkit-transform:scaleX(1);transform:scaleX(1)}50%{-webkit-transform:scale3d(1.05,1.05,1.05);transform:scale3d(1.05,1.05,1.05)}}.lookbook__dot{font-size:12px;font-weight:700;position:absolute;top:0;left:0;bottom:0;right:0;border-radius:50%;text-align:center;line-height:32px;-moz-animation:pulse 1.5s ease infinite;-o-animation:pulse 1.5s ease infinite;-webkit-animation:pulse 1.5s ease infinite;animation:pulse 1.5s ease infinite}.lookbook__dot svg{width:14px;vertical-align:middle}.lookbook__pop{position:absolute;width:200px;text-align:center;padding:10px;-webkit-transition:ease .35s;-o-transition:ease .35s;transition:ease .35s;opacity:0;visibility:hidden}.lookbook__point:hover .lookbook__pop{opacity:1;visibility:visible}.lookbook__pop--top{-webkit-transform:translateY(-100%) translateX(-100px);-ms-transform:translateY(-100%) translateX(-100px);transform:translateY(-100%) translateX(-100px);top:0;left:8px}.lookbook__point:hover .lookbook__pop--top{top:-10px}.lookbook__pop--bottom{-webkit-transform:translateY(100%) translateX(-100px);-ms-transform:translateY(100%) translateX(-100px);transform:translateY(100%) translateX(-100px);bottom:0;left:8px}.lookbook__point:hover .lookbook__pop--bottom{bottom:-10px}.lookbook__pop--left{-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);right:100%}.lookbook__point:hover .lookbook__pop--left{right:calc(100% + 10px)}.lookbook__pop--right{-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:100%}.lookbook__point:hover .lookbook__pop--right{left:calc(100% + 10px)}.sgridbanner__title{text-transform:none}.sbanner__wrap{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.sbanner__link{display:block}.sbanner__image{float:left}.sbanner__caption{position:absolute;width:100%;height:100%;top:0;left:0;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;padding:15px}
+  .heffect--3:after,.heffect--4:after,.heffect--5:after,.heffect--6:after{padding-bottom:0}[class*=heffect]{overflow:hidden;position:relative}[class*=heffect]:after,[class*=heffect]:before{-ms-transition:all .5s ease 0s;-webkit-transition:all .5s ease 0s;transition:all .5s ease 0s;position:absolute;content:""}.heffect--1:after{right:-100%}.heffect--1:before{left:-100%}.heffect--1:after,.heffect--1:before{-ms-transform:skew(20deg,0deg);-webkit-transform:skew(20deg,0deg);transform:skew(20deg,0deg);width:70%;height:100%;background-color:#fff;background-color:rgba(255,255,255,.3);zoom:1;background-color:transparent\9;top:0}.heffect--1:hover:after{right:-20%}.heffect--1:hover:before{left:-20%}.heffect--2:after{right:-100%}.heffect--2:before{left:-100%}.heffect--2:after,.heffect--2:before{-ms-transform:skew(20deg,0deg);-webkit-transform:skew(20deg,0deg);transform:skew(20deg,0deg);width:70%;height:100%;background-color:#000;background-color:rgba(0,0,0,.3);zoom:1;background-color:transparent\9;top:0}.heffect--2:hover:after{right:-20%}.heffect--5:after,.heffect--6:after{right:0;bottom:0}.heffect--2:hover:before{left:-20%}.heffect--3:after,.heffect--3:before{width:100%;height:100%;z-index:1;top:0;left:0;background-color:#fff;opacity:0}.heffect--3:hover:before{left:50%;width:0;opacity:.5}.heffect--3:hover:after{top:50%;height:0;opacity:.5}.heffect--4:after,.heffect--4:before{width:100%;height:100%;top:0;left:0;background-color:#000;opacity:0;z-index:1}.heffect--5:after,.heffect--5:before{background-color:rgba(255,255,255,.1);width:0;height:0}.heffect--4:hover:before{left:50%;width:0;opacity:.5}.heffect--4:hover:after{top:50%;height:0;opacity:.5}.heffect--5:before,.heffect--6:before{top:0;left:0;margin:auto}.heffect--5:hover:after,.heffect--5:hover:before{width:100%;height:100%}.heffect--6:after,.heffect--6:before{background-color:rgba(0,0,0,.1);width:0;height:0}.heffect--7:before,.heffect--8:before{bottom:20px;left:20px;right:20px;top:20px;z-index:1}.heffect--6:hover:after,.heffect--6:hover:before{width:100%;height:100%}.heffect--7:before{border:2px solid #fff;-webkit-box-shadow:0 0 0 30px rgba(255,255,255,.2);box-shadow:0 0 0 30px rgba(255,255,255,.2);opacity:0;transform:scale(1.4);-webkit-transform:scale(1.4);-moz-transform:scale(1.4);-ms-transform:scale(1.4);-o-transform:scale(1.4)}.heffect--7:hover:before{opacity:1;filter:alpha(opacity=100);-ms-transform:scale(1);-webkit-transform:scale(1);transform:scale(1)}.heffect--8:before{border:2px solid #000;-webkit-box-shadow:0 0 0 30px rgba(0,0,0,.2);box-shadow:0 0 0 30px rgba(0,0,0,.2);opacity:0;transform:scale(1.4);-webkit-transform:scale(1.4);-moz-transform:scale(1.4);-ms-transform:scale(1.4);-o-transform:scale(1.4)}.heffect--8:hover:before{opacity:1;filter:alpha(opacity=100);-ms-transform:scale(1);-webkit-transform:scale(1);transform:scale(1)}
+{% endstyle %}
+
+{% schema %}
+  {"name":"Shopify grid banner","class":"index-section","max_blocks":1000,"settings":[{"type":"header","content":"Background"},{"type":"image_picker","id":"bg_image","label":"Background image"},{"type":"color","id":"bg_color","label":"Background color"},{"type":"checkbox","id":"bg_attachment","label":"Parallax"},{"type":"header","content":"Distance"},{"type":"range","id":"max_width","label":"Section width","min":1200,"max":1920,"step":10,"unit":"px","default":1390},{"type":"range","id":"gutter","min":0,"max":40,"step":1,"unit":"px","label":"Gutter","default":20},{"type":"range","id":"margin_top","label":"Margin Top","min":0,"max":100,"step":1,"unit":"px","default":0},{"type":"range","id":"margin_bottom","label":"Margin Bottom","min":0,"max":100,"step":1,"unit":"px","default":0},{"type":"range","id":"padding_top","label":"Padding Top","min":0,"max":100,"step":1,"unit":"px","default":10},{"type":"range","id":"padding_bottom","label":"Padding Bottom","min":0,"max":100,"step":1,"unit":"px","default":10},{"type":"header","content":"Heading"},{"type":"text","id":"title","label":"Text","default":"Grid banner"},{"type":"color","id":"title_cl","label":"Color","default":"#3d4246"},{"type":"font_picker","id":"title_font","label":"Font","default":"work_sans_n6"},{"type":"textarea","id":"title_style","label":"Custom style","default":"font-weight:bold;font-size:30px;text-align:center;","info":"[How to CSS text?](https://www.w3schools.com/css/css_text.asp)"},{"type":"header","content":"Subheading"},{"type":"text","id":"subtitle","label":"Text","default":"Section subheading"},{"type":"color","id":"subtitle_cl","label":"Color","default":"#3d4246"},{"type":"font_picker","id":"subtitle_font","label":"Font","default":"alegreya_sans_n4"},{"type":"textarea","id":"subtitle_style","label":"Custom style","default":"font-style:italic;font-size:18px;text-align:center;font-weight:100;","info":"[How to CSS text?](https://www.w3schools.com/css/css_text.asp)"}],"blocks":[{"type":"image","name":"Banner","settings":[{"type":"range","id":"banner_width","label":"Width","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"alt","label":"Alt image (for SEO)"},{"type":"url","id":"link","label":"Link URL"},{"type":"text","id":"title","label":"Title (for SEO)"},{"type":"select","id":"effect","label":"Hover effect","default":"6","options":[{"value":"1","label":"Style 1"},{"value":"2","label":"Style 2"},{"value":"3","label":"Style 3"},{"value":"4","label":"Style 4"},{"value":"5","label":"Style 5"},{"value":"6","label":"Style 6"},{"value":"7","label":"Style 7"},{"value":"8","label":"Style 8"}]}]},{"type":"text","name":"Banner with text","settings":[{"type":"range","id":"banner_width","label":"Width","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"alt","label":"Alt image (for SEO)"},{"type":"url","id":"link","label":"Link URL"},{"type":"select","id":"effect","label":"Hover effect","default":"6","options":[{"value":"1","label":"Style 1"},{"value":"2","label":"Style 2"},{"value":"3","label":"Style 3"},{"value":"4","label":"Style 4"},{"value":"5","label":"Style 5"},{"value":"6","label":"Style 6"},{"value":"7","label":"Style 7"},{"value":"8","label":"Style 8"}]},{"type":"header","content":"Caption"},{"type":"select","id":"justify-content","label":"Vertical alignment","default":"center","options":[{"value":"flex-start","label":"Top"},{"value":"center","label":"Center"},{"value":"flex-end","label":"Bottom"}]},{"type":"select","id":"align-items","label":"Horizontal alignment","default":"center","options":[{"value":"flex-start","label":"Left"},{"value":"center","label":"Center"},{"value":"flex-end","label":"Right"}]},{"type":"select","id":"text-align","label":"Text align","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"header","content":"Title"},{"type":"color","id":"title-cl","label":"Color","default":"#000000"},{"type":"text","id":"title","label":"Text","default":"Image with caption"},{"type":"range","id":"title-fz","label":"Font size","min":20,"max":120,"step":1,"unit":"px","default":25},{"type":"textarea","id":"title-style","label":"Custom style","default":"font-weight:bold;line-height: 1;","info":"[How to CSS text?](https://www.w3schools.com/css/css_text.asp)"},{"type":"header","content":"Subtitle"},{"type":"color","id":"subtitle-cl","label":"Color","default":"#000000"},{"type":"text","id":"subtitle","label":"Text"},{"type":"range","id":"subtitle-fz","label":"Font size","min":10,"max":110,"step":1,"unit":"px","default":18},{"type":"textarea","id":"subtitle-style","label":"Custom style","default":"font-style:italic;line-height: 1;","info":"[How to CSS text?](https://www.w3schools.com/css/css_text.asp)"}]},{"type":"lookbook","name":"Lookbook","settings":[{"type":"range","id":"banner_width","label":"Width","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"alt","label":"Alt image (for SEO)"},{"type":"color","id":"point__background","label":"Point background","default":"#ff5858"},{"type":"color","id":"point__text","label":"Point text","default":"#ffffff"},{"type":"color","id":"popup__background","label":"Popup background","default":"#d4d4d4"},{"type":"select","id":"hidden_xs","label":"Disable popup when device's width is less than:","default":"991px","options":[{"value":"499px","label":"500 pixels"},{"value":"767px","label":"768 pixels"},{"value":"991px","label":"992 pixels"},{"value":"1199px","label":"1200 pixels"},{"value":"1399px","label":"1400 pixels"}]},{"type":"header","content":"Point 1"},{"type":"product","id":"product--1","label":"Product"},{"type":"range","id":"top--1","label":"Distance from top (%)","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"range","id":"left--1","label":"Distance from left (%)","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"select","id":"popup--1","label":"Product show at","default":"top","options":[{"value":"top","label":"Top"},{"value":"right","label":"Right"},{"value":"bottom","label":"Bottom"},{"value":"left","label":"Left"}]},{"type":"header","content":"Point 2"},{"type":"product","id":"product--2","label":"Product"},{"type":"range","id":"top--2","label":"Distance from top (%)","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"range","id":"left--2","label":"Distance from left (%)","min":0,"max":100,"step":1,"unit":"%","default":75},{"type":"select","id":"popup--2","label":"Product show at","default":"top","options":[{"value":"top","label":"Top"},{"value":"right","label":"Right"},{"value":"bottom","label":"Bottom"},{"value":"left","label":"Left"}]},{"type":"header","content":"Point 3"},{"type":"product","id":"product--3","label":"Product"},{"type":"range","id":"top--3","label":"Distance from top (%)","min":0,"max":100,"step":1,"unit":"%","default":75},{"type":"range","id":"left--3","label":"Distance from left (%)","min":0,"max":100,"step":1,"unit":"%","default":25},{"type":"select","id":"popup--3","label":"Product show at","default":"top","options":[{"value":"top","label":"Top"},{"value":"right","label":"Right"},{"value":"bottom","label":"Bottom"},{"value":"left","label":"Left"}]},{"type":"header","content":"Point 4"},{"type":"product","id":"product--4","label":"Product"},{"type":"range","id":"top--4","label":"Distance from top (%)","min":0,"max":100,"step":1,"unit":"%","default":75},{"type":"range","id":"left--4","label":"Distance from left (%)","min":0,"max":100,"step":1,"unit":"%","default":75},{"type":"select","id":"popup--4","label":"Product show at","default":"top","options":[{"value":"top","label":"Top"},{"value":"right","label":"Right"},{"value":"bottom","label":"Bottom"},{"value":"left","label":"Left"}]}]}],"presets":[{"name":"Grid banner","category":"# Shopify section","blocks":[{"type":"image"},{"type":"image"},{"type":"image"},{"type":"image"}]}]}
+{% endschema %}
