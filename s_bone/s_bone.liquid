@@ -1,14 +1,18 @@
-<div id="sbone__wrap--{{section.id}}" class="sbone__wrap">
-  <div id="sbone__content--{{section.id}}" class="sbone__content">
+<div class="sbone__wrap">
+  <div class="sbone__content">
     {% if section.settings.title != blank %}
-    <h2 id="sbone__title--{{section.id}}" class="sbone__title">{{ section.settings.title }}</h2>
+    <h2 class="sbone__title">{{ section.settings.title }}</h2>
     {% endif %}
     {% if section.settings.subtitle != blank %}
-    <h4 id="sbone__subtitle--{{section.id}}" class="sbone__subtitle">{{ section.settings.subtitle }}</h4>
+    <h4 class="sbone__subtitle">{{ section.settings.subtitle }}</h4>
     {% endif %}
     <div>
       {% comment %} CONTENT HERE {% endcomment %}
-      CONTENT HERE
+      {% for block in section.blocks %}
+      <div class="sbone-item" {{ block.shopify_attributes }}>
+        {{block.settings.title}}
+      </div>
+      {% endfor %}
     </div>
   </div>
 </div>
@@ -21,35 +25,12 @@
   {% assign subtitle_font = section.settings.subtitle_font %}
   {{ title_font | font_face }}
   {{ subtitle_font | font_face }}
-  #sbone__title--{{section.id}}{
-    font-family:{{title_font.family}};
-    color:{{section.settings.title_cl}};
-    {{section.settings.title_style}}
-  }
-  #sbone__subtitle--{{section.id}}{
-    font-family:{{subtitle_font.family}};
-    color:{{section.settings.subtitle_cl}};
-    {{section.settings.subtitle_style}}
-  }
-  #sbone__wrap--{{section.id}}{
-    margin-top:{{section.settings.margin_top}}px;
-    margin-bottom:{{section.settings.margin_bottom}}px;
-    padding-top:{{section.settings.padding_top}}px;
-    padding-bottom:{{section.settings.padding_bottom}}px;
-    background-color:{{section.settings.bg_color}};
-    {% if section.settings.bg_image %}
-    background-image:url({{section.settings.bg_image | img_url:'master'}});
-    {% if section.settings.bg_attachment %}background-attachment:fixed;{% endif %}
-    background-repeat:no-repeat;
-    background-position:center;
-    {% endif %}
-  }
-  #sbone__content--{{section.id}}{
-    max-width:{{section.settings.max_width}}px;
-    margin:0 auto;
-  }
-  
-  {% endstyle %}
+  #shopify-section-{{section.id}} .sbone__title{font-family:{{title_font.family}};color:{{section.settings.title_cl}};{{section.settings.title_style}}}
+  #shopify-section-{{section.id}} .sbone__subtitle{font-family:{{subtitle_font.family}};color:{{section.settings.subtitle_cl}};{{section.settings.subtitle_style}}}
+  #shopify-section-{{section.id}} .sbone__wrap{margin-top:{{section.settings.margin_top}}px;margin-bottom:{{section.settings.margin_bottom}}px;padding-top:{{section.settings.padding_top}}px;padding-bottom:{{section.settings.padding_bottom}}px;background-color:{{section.settings.bg_color}};{% if section.settings.bg_image %}background-image:url({{section.settings.bg_image | img_url:'master'}});{% if section.settings.bg_attachment %}background-attachment:fixed;{% endif %}background-repeat:no-repeat;background-position:center;{% endif %}}
+  #shopify-section-{{section.id}} .sbone__content{max-width:{{section.settings.max_width}}px;margin:0 auto;}
+ 
+{% endstyle %}
 
 {% schema %}
   {
@@ -195,14 +176,10 @@
         "name": "Banner",
         "settings": [
           {
-            "type": "range",
-            "id": "banner_width",
-            "label": "Width",
-            "min": 0,
-            "max": 100,
-            "step": 1,
-            "unit": "%",
-            "default": 25
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default":"Block title"
           }
         ]
       }
